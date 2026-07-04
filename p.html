@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management Portal</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background-color:#f4f4f4;
+        }
+
+        header{
+              background:linear-gradient(to right,#24dacb,#ed6deb);
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        header h1{
+            margin-bottom:10px;
+        }
+
+        nav{
+            background-color:#333;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0 20px;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            padding:15px 20px;
+            display:inline-block;
+        }
+
+        nav a:hover{
+            background-color:rgba(77, 255, 0, 0.749);
+        }
+
+        .nav-buttons{
+            display:flex;
+            gap:10px;
+        }
+
+        .login{
+            background:#28a745;
+        }
+
+        .signup{
+            background:#ff9800;
+        }
+
+        .hero{
+            background:linear-gradient(to right,#e44418,#e0e723);
+            color:white;
+            text-align:center;
+            padding:60px 20px;
+        }
+
+        .hero h2{
+            font-size:40px;
+            margin-bottom:20px;
+        }
+
+        .hero p{
+            font-size:20px;
+            margin-bottom:20px;
+        }
+
+        button{
+            background-color:#0066cc;
+            color:white;
+            border:none;
+            padding:12px 25px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background-color:rgb(11, 127, 147);
+        }
+
+        .heading{
+            text-align:left;
+            margin:40px 0 20px;
+            color:#333;
+        }
+
+        .students{
+            display:flex;
+            justify-content:center;
+            gap:25px;
+            flex-wrap:wrap;
+            padding:20px;
+        }
+
+        .card{
+            width:260px;
+             background:linear-gradient(to right,#e44418,#6dd5ed);
+            border-radius:10px;
+            text-align:center;
+            padding:20px;
+            box-shadow:0 0 10px gray;
+            transition:0.4s;
+        }
+
+        .card:hover{
+            transform:scale(1.05);
+        }
+
+        .card img{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            margin-bottom:15px;
+        }
+
+        .card h3{
+            margin-bottom:10px;
+        }
+
+        .card p{
+            margin-bottom:15px;
+        }
+
+        .courses{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:20px;
+            padding:30px;
+        }
+
+        .course{
+            background:white;
+            padding:30px;
+            text-align:center;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+            font-size:22px;
+        }
+
+        form{
+            width:400px;
+            margin:40px auto;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+        }
+
+        label{
+            font-weight:bold;
+        }
+
+        input,
+        select,
+        textarea{
+            width:100%;
+            padding:10px;
+            margin-top:5px;
+            margin-bottom:15px;
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:20px;
+            margin-top:40px;
+        }
+
+        @media(max-width:768px){
+
+            nav{
+                flex-direction:column;
+                text-align:center;
+            }
+
+            .students{
+                flex-direction:column;
+                align-items:center;
+            }
+
+            .courses{
+                grid-template-columns:1fr;
+            }
+
+            form{
+                width:90%;
+            }
+
+            .hero h2{
+                font-size:28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Student Management Portal</h1>
+    <p>Learn • Practice • Grow</p>
+</header>
+
+<nav>
+
+    <div>
+        <a href="#">Home</a>
+        <a href="#">Students</a>
+        <a href="#">Courses</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="login">Login</button>
+        <button class="signup">Sign Up</button>
+    </div>
+
+</nav>
+
+<section class="hero">
+    <h2>Welcome to Student Management Portal</h2>
+    <p>Learn HTML and CSS by building beautiful web pages.</p>
+    <button>Explore Courses</button>
+</section>
+
+<h2 class="heading">Top Students</h2>
+
+<section class="students">
+
+    <div class="card">
+        <img src="https://thfvnext.bing.com/th/id/OIP.wK-g2xHLWe83tKgplbqHBQHaLE?w=115&h=180&c=7&r=0&o=7&cb=thfvnextfalcon4&dpr=1.3&pid=1.7&rm=3" alt="Student">
+        <h3>SUMANTH</h3>
+        <p>Artificial Intelligence</p>
+        <button>View Profile</button>
+    </div>
+
+    <div class="card">
+        <img src="https://www.bing.com/th/id/OIP.Ez7c33vfP7weqcYfq7VdzAHaLj?w=108&h=128&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=ImgAns&rm=2" alt="Student">
+        <h3>RISHI</h3>
+        <p>Web Development</p>
+        <button>View Profile</button>
+    </div>
+
+    <div class="card">
+        <img src="https://thfvnext.bing.com/th/id/OIP.85j3W98d2_R6Tc0xOwU66QHaFj?w=234&h=180&c=7&r=0&o=7&cb=thfvnextfalcon4&dpr=1.3&pid=1.7&rm=3" alt="Student">
+        <h3>VARUN</h3>
+        <p>Java Full Stack</p>
+        <button>View Profile</button>
+    </div>
+
+    <div class="card">
+        <img src="data:image/webp;base64,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" alt="Student">
+        <h3>MINNU</h3>
+        <p>Python Programming</p>
+        <button>View Profile</button>
+    </div>
+
+    <div class="card">
+        <img src="https://thfvnext.bing.com/th/id/OIP.VCN1iFZ3kVoKlCn3HNoMNwHaHa?w=167&h=180&c=7&r=0&o=7&cb=thfvnextfalcon4&dpr=1.3&pid=1.7&rm=3" alt="Student">
+        <h3>SANDHYA</h3>
+        <p>Cyber Security</p>
+        <button>View Profile</button>
+    </div>
+
+   
+
+</section>
+
+<h2 class="heading">Available Courses</h2>
+
+<section class="courses">
+    <div class="course">HTML</div>
+    <div class="course">CSS</div>
+    <div class="course">JavaScript</div>
+    <div class="course">React</div>
+    <div class="course">Java</div>
+    <div class="course">Python</div>
+</section>
+
+<h2 class="heading">Student Registration Form</h2>
+
+<form>
+
+    <label>Student Name</label>
+    <input type="text" placeholder="Enter Name">
+
+    <label>Email</label>
+    <input type="email" placeholder="Enter Email">
+
+    <label>Age</label>
+    <input type="number" placeholder="Enter Age">
+
+    <label>Select Course</label>
+
+    <select>
+        <option>HTML</option>
+        <option>CSS</option>
+        <option>JavaScript</option>
+        <option>Java</option>
+        <option>Python</option>
+    </select>
+
+    <label>Address</label>
+    <textarea rows="4" placeholder="Enter Address"></textarea>
+
+    <button type="submit">Register</button>
+
+</form>
+
+<footer>
+    <p>© 2026 Student Management Portal | Designed using HTML & CSS</p>
+</footer>
+
+</body>
+</html>
