@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnimeStream</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121933;
+      --card:#18213f;
+      --soft:#202b52;
+      --text:#eef2ff;
+      --muted:#aab3d1;
+      --accent:#7c5cff;
+      --accent2:#00d4ff;
+      --danger:#ff5d7a;
+      --success:#41d392;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#08101f,#0f1730 30%,#0a1122);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(12px);
+      background:rgba(8,12,26,.7);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .nav{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:16px 20px;
+      flex-wrap:wrap;
+    }
+
+    .logo{
+      font-size:1.5rem;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .logo span{
+      color:var(--accent2);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .search,
+    .select,
+    .btn{
+      border:none;
+      outline:none;
+      border-radius:12px;
+      padding:12px 14px;
+      background:var(--panel);
+      color:var(--text);
+      font-size:.95rem;
+    }
+
+    .search{
+      min-width:260px;
+    }
+
+    .btn{
+      cursor:pointer;
+      transition:.2s ease;
+      background:linear-gradient(135deg,var(--accent),#5b8cff);
+      font-weight:700;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      opacity:.95;
+    }
+
+    .btn.secondary{
+      background:var(--soft);
+    }
+
+    .hero{
+      max-width:1200px;
+      margin:28px auto 18px;
+      padding:0 20px;
+    }
+
+    .hero-card{
+      position:relative;
+      min-height:360px;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:
+        linear-gradient(90deg,rgba(7,10,20,.92) 0%,rgba(7,10,20,.72) 38%,rgba(7,10,20,.22) 100%),
+        url('[images.unsplash.com](https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1400&q=80)') center/cover no-repeat;
+      display:flex;
+      align-items:flex-end;
+    }
+
+    .hero-content{
+      padding:32px;
+      max-width:620px;
+    }
+
+    .badge{
+      display:inline-block;
+      background:rgba(124,92,255,.18);
+      border:1px solid rgba(124,92,255,.35);
+      color:#d9d1ff;
+      padding:8px 12px;
+      border-radius:999px;
+      margin-bottom:14px;
+      font-size:.85rem;
+    }
+
+    .hero h1{
+      font-size:2.5rem;
+      line-height:1.1;
+      margin-bottom:12px;
+    }
+
+    .hero p{
+      color:var(--muted);
+      margin-bottom:18px;
+      line-height:1.6;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    main{
+      max-width:1200px;
+      margin:auto;
+      padding:10px 20px 40px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:20px 0 16px;
+      flex-wrap:wrap;
+    }
+
+    .section-head h2{
+      font-size:1.4rem;
+    }
+
+    .count{
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+
+    .card{
+      background:linear-gradient(180deg,var(--card),#121932);
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 36px rgba(0,0,0,.42);
+    }
+
+    .poster{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .card-body{
+      padding:14px;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      color:var(--muted);
+      font-size:.88rem;
+      margin-bottom:8px;
+    }
+
+    .title{
+      font-size:1.05rem;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .desc{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.5;
+      height:42px;
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .tag{
+      background:rgba(255,255,255,.06);
+      color:#d5dcff;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.78rem;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+    }
+
+    .actions .btn{
+      flex:1;
+      padding:10px 12px;
+      font-size:.9rem;
+    }
+
+    .actions .btn.secondary{
+      background:#243056;
+    }
+
+    .empty{
+      background:var(--panel);
+      border:1px dashed rgba(255,255,255,.15);
+      border-radius:18px;
+      padding:26px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.75);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:1000;
+    }
+
+    .modal.active{
+      display:flex;
+    }
+
+    .modal-content{
+      width:min(960px,100%);
+      background:#0d1429;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .player-wrap{
+      background:#000;
+      aspect-ratio:16/9;
+      width:100%;
+    }
+
+    video{
+      width:100%;
+      height:100%;
+      background:#000;
+    }
+
+    .modal-info{
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .modal-info h3{
+      margin-bottom:6px;
+      font-size:1.3rem;
+    }
+
+    .modal-info p{
+      color:var(--muted);
+      line-height:1.6;
+      max-width:700px;
+    }
+
+    .close{
+      background:var(--danger);
+      color:#fff;
+      border:none;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    footer{
+      max-width:1200px;
+      margin:10px auto 40px;
+      padding:0 20px;
+      color:var(--muted);
+      text-align:center;
+      font-size:.92rem;
+    }
+
+    @media (max-width:640px){
+      .hero h1{
+        font-size:1.8rem;
+      }
+
+      .search{
+        min-width:100%;
+      }
+
+      .controls{
+        width:100%;
+      }
+
+      .controls > *{
+        flex:1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">Anime<span>Stream</span></div>
+      <div class="controls">
+        <input id="searchInput" class="search" type="text" placeholder="Search anime..." />
+        <select id="genreFilter" class="select">
+          <option value="all">All Genres</option>
+          <option value="Action">Action</option>
+          <option value="Adventure">Adventure</option>
+          <option value="Fantasy">Fantasy</option>
+          <option value="Drama">Drama</option>
+          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="Comedy">Comedy</option>
+        </select>
+        <button id="showAllBtn" class="btn secondary">All Anime</button>
+        <button id="showWatchlistBtn" class="btn">Watchlist</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-content">
+        <div class="badge">Trending Now</div>
+        <h1>Watch anime in a clean, fast streaming layout</h1>
+        <p>
+          This demo shows how to build an anime streaming website in one HTML file
+          with search, categories, a watchlist, and a built-in video player.
+        </p>
+        <div class="hero-actions">
+          <button class="btn" onclick="scrollToGrid()">Browse Library</button>
+          <button class="btn secondary" onclick="showFeatured()">Play Featured</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="section-head">
+      <h2 id="sectionTitle">Popular Anime</h2>
+      <div class="count" id="resultCount">0 titles</div>
+    </div>
+    <div id="animeGrid" class="grid"></div>
+  </main>
+
+  <footer>
+    Demo project only. Replace placeholder thumbnails and video URLs with content you have rights to stream.
+  </footer>
+
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <div class="player-wrap">
+        <video id="videoPlayer" controls></video>
+      </div>
+      <div class="modal-info">
+        <div>
+          <h3 id="modalTitle">Anime Title</h3>
+          <p id="modalDescription">Anime description</p>
+        </div>
+        <button class="close" onclick="closePlayer()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const animeData = [
+      {
+        id: 1,
+        title: "Shadow Blade",
+        genre: ["Action", "Fantasy"],
+        year: 2025,
+        rating: "8.9",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=900&q=80)",
+        description: "A rogue swordsman battles cursed spirits across a broken kingdom.",
+        video: "[w3schools.com](https://www.w3schools.com/html/mov_bbb.mp4)"
+      },
+      {
+        id: 2,
+        title: "Sky Mecha 2049",
+        genre: ["Sci-Fi", "Action"],
+        year: 2026,
+        rating: "8.7",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80)",
+        description: "Teen pilots defend floating cities in a war against biomechanical titans.",
+        video: "[interactive-examples.mdn.mozilla.net](https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4)"
+      },
+      {
+        id: 3,
+        title: "Moonlit Promise",
+        genre: ["Drama", "Fantasy"],
+        year: 2024,
+        rating: "8.4",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80)",
+        description: "Two strangers are tied together by a celestial contract they cannot escape.",
+        video: "[w3schools.com](https://www.w3schools.com/html/movie.mp4)"
+      },
+      {
+        id: 4,
+        title: "Laughing Bento Club",
+        genre: ["Comedy"],
+        year: 2025,
+        rating: "7.9",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80)",
+        description: "A school lunch club turns every meal into absurd chaos and friendship.",
+        video: "[w3schools.com](https://www.w3schools.com/html/mov_bbb.mp4)"
+      },
+      {
+        id: 5,
+        title: "Eternal Voyage",
+        genre: ["Adventure", "Fantasy"],
+        year: 2023,
+        rating: "8.8",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80)",
+        description: "A young navigator follows a mythic map to the edge of the known world.",
+        video: "[interactive-examples.mdn.mozilla.net](https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4)"
+      },
+      {
+        id: 6,
+        title: "Neon Hearts",
+        genre: ["Drama", "Sci-Fi"],
+        year: 2026,
+        rating: "8.3",
+        image: "[images.unsplash.com](https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80)",
+        description: "In a cyberpunk city, memory dealers uncover a conspiracy hidden in human emotions.",
+        video: "[w3schools.com](https://www.w3schools.com/html/movie.mp4)"
+      }
+    ];
+
+    const animeGrid = document.getElementById("animeGrid");
+    const searchInput = document.getElementById("searchInput");
+    const genreFilter = document.getElementById("genreFilter");
+    const resultCount = document.getElementById("resultCount");
+    const sectionTitle = document.getElementById("sectionTitle");
+
+    const modal = document.getElementById("videoModal");
+    const videoPlayer = document.getElementById("videoPlayer");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+
+    let viewMode = "all";
+
+    function getWatchlist() {
+      return JSON.parse(localStorage.getItem("animeWatchlist")) || [];
+    }
+
+    function saveWatchlist(list) {
+      localStorage.setItem("animeWatchlist", JSON.stringify(list));
+    }
+
+    function isInWatchlist(id) {
+      return getWatchlist().includes(id);
+    }
+
+    function toggleWatchlist(id) {
+      const watchlist = getWatchlist();
+      const index = watchlist.indexOf(id);
+
+      if (index > -1) {
+        watchlist.splice(index, 1);
+      } else {
+        watchlist.push(id);
+      }
+
+      saveWatchlist(watchlist);
+      renderCurrentView();
+    }
+
+    function createCard(anime) {
+      const watchlisted = isInWatchlist(anime.id);
+
+      return `
+        <div class="card">
+          <img class="poster" src="${anime.image}" alt="${anime.title}" />
+          <div class="card-body">
+            <div class="meta">
+              <span>${anime.year}</span>
+              <span>⭐ ${anime.rating}</span>
+            </div>
+            <div class="title">${anime.title}</div>
+            <div class="desc">${anime.description}</div>
+            <div class="tags">
+              ${anime.genre.map(g => `<span class="tag">${g}</span>`).join("")}
+            </div>
+            <div class="actions">
+              <button class="btn" onclick="playAnime(${anime.id})">Watch</button>
+              <button class="btn secondary" onclick="toggleWatchlist(${anime.id})">
+                ${watchlisted ? "Remove" : "Watchlist"}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAnime(list) {
+      animeGrid.innerHTML = list.length
+        ? list.map(createCard).join("")
+        : `<div class="empty">No anime found for this filter.</div>`;
+      resultCount.textContent = `${list.length} title${list.length !== 1 ? "s" : ""}`;
+    }
+
+    function filterAnime() {
+      const query = searchInput.value.toLowerCase().trim();
+      const genre = genreFilter.value;
+
+      let filtered = animeData.filter(anime => {
+        const matchesSearch =
+          anime.title.toLowerCase().includes(query) ||
+          anime.description.toLowerCase().includes(query) ||
+          anime.genre.join(" ").toLowerCase().includes(query);
+
+        const matchesGenre =
+          genre === "all" || anime.genre.includes(genre);
+
+        return matchesSearch && matchesGenre;
+      });
+
+      if (viewMode === "watchlist") {
+        const watchlist = getWatchlist();
+        filtered = filtered.filter(anime => watchlist.includes(anime.id));
+        sectionTitle.textContent = "My Watchlist";
+      } else {
+        sectionTitle.textContent = "Popular Anime";
+      }
+
+      renderAnime(filtered);
+    }
+
+    function renderCurrentView() {
+      filterAnime();
+    }
+
+    function playAnime(id) {
+      const anime = animeData.find(item => item.id === id);
+      if (!anime) return;
+
+      videoPlayer.src = anime.video;
+      modalTitle.textContent = anime.title;
+      modalDescription.textContent = anime.description;
+      modal.classList.add("active");
+      videoPlayer.play().catch(() => {});
+    }
+
+    function closePlayer() {
+      videoPlayer.pause();
+      videoPlayer.src = "";
+      modal.classList.remove("active");
+    }
+
+    function scrollToGrid() {
+      document.querySelector("main").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showFeatured() {
+      playAnime(1);
+    }
+
+    document.getElementById("showWatchlistBtn").addEventListener("click", () => {
+      viewMode = "watchlist";
+      renderCurrentView();
+    });
+
+    document.getElementById("showAllBtn").addEventListener("click", () => {
+      viewMode = "all";
+      renderCurrentView();
+    });
+
+    searchInput.addEventListener("input", renderCurrentView);
+    genreFilter.addEventListener("change", renderCurrentView);
+
+    modal.addEventListener("click", e => {
+      if (e.target === modal) closePlayer();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closePlayer();
+    });
+
+    renderCurrentView();
+  </script>
+</body>
+</html>

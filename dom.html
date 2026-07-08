@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#eef2f7;
+}
+
+header{
+background:linear-gradient(to right,#e44418,#e0e723);
+color:rgb(255, 255, 255);
+padding:20px;
+text-align:center;
+}
+
+.container{
+width:90%;
+max-width:1100px;
+margin:20px auto;
+}
+
+.card{
+background:linear-gradient(to right,#77e4ec,#e0e723);
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(19, 139, 231, 0.2);
+}
+
+h2{
+margin-bottom:15px;
+color:#0d6efd;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #453e3e;
+border-radius:5px;
+}
+
+button{
+padding:12px 18px;
+background:#60bd35;
+color:rgb(0, 0, 0);
+border:none;
+border-radius:5px;
+cursor:pointer;
+margin:5px;
+}
+
+button:hover{
+background:#797fa7;
+}
+
+.student{
+background:#f8f9fa;
+padding:15px;
+margin-top:10px;
+border-left:5px solid #0d6efd;
+border-radius:5px;
+}
+
+.student h3{
+margin-bottom:10px;
+}
+
+#studentList{
+margin-top:20px;
+}
+
+.dark{
+background:#222;
+color:white;
+}
+
+.dark .card{
+background:#333;
+color:white;
+}
+
+.dark input,
+.dark select{
+background:#555;
+color:white;
+border:none;
+}
+
+.highlight{
+background:#d4edda!important;
+border-left:5px solid green;
+}
+
+.parent{
+background:#cfe2ff;
+padding:25px;
+margin-top:20px;
+}
+
+.child{
+background:#ffc107;
+padding:25px;
+margin-top:15px;
+text-align:center;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1 id="title">
+Student Dashboard
+</h1>
+<p>
+JavaScript DOM & Events Project
+</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Add Student</h2>
+<input type="text" id="name" placeholder="Enter Student Name">
+<select id="course">
+<option>HTML</option>
+<option>CSS</option>
+<option>JavaScript</option>
+<option>Java</option>
+<option>Python</option>
+</select>
+<button id="addBtn">Add Student</button>
+<button onclick="toggleTheme()">Dark Mode</button>
+<button onclick="highlightStudents()">Highlight Students</button>
+<p>
+<b>Total Students :</b>
+<span id="count">0</span>
+</p>
+</div>
+
+<div class="card">
+<h2>Search Student</h2>
+<input type="text" id="search" placeholder="Enter Student Name">
+<button onclick="searchStudent()">Search</button>
+<p id="searchResult"></p>
+</div>
+
+<div class="card">
+<h2>Update Student Course</h2>
+<input type="text" id="updateName" placeholder="Enter Existing Student Name">
+<select id="updateCourse">
+<option>HTML</option>
+<option>CSS</option>
+<option>JavaScript</option>
+<option>Java</option>
+<option>Python</option>
+</select>
+<button onclick="updateStudentCourse()">Update Course</button>
+<p id="updateResult"></p>
+</div>
+
+<div class="card">
+<h2>Filter Students by Course</h2>
+<select id="filterCourse">
+<option value="All">All Courses</option>
+<option>HTML</option>
+<option>CSS</option>
+<option>JavaScript</option>
+<option>Java</option>
+<option>Python</option>
+</select>
+<button onclick="filterStudents()">Filter</button>
+</div>
+
+<div class="card">
+<h2>Student List</h2>
+<div id="studentList"></div>
+</div>
+
+<div class="card">
+<h2>Event Bubbling Demo</h2>
+<div class="parent" id="parent">
+Parent
+<div class="child" id="child">
+Click Me
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+// Array to store students
+let students = [];
+
+// getElementById() + addEventListener()
+let addButton = document.getElementById("addBtn");
+addButton.addEventListener("click", addStudent);
+
+// ============================
+// Add Student
+// ============================
+function addStudent(){
+    let name = document.getElementById("name").value.trim();
+    let course = document.getElementById("course").value;
+
+    if(name==""){
+        alert("Please Enter Student Name");
+        return;
+    }
+
+    let student = {
+        name: name,
+        course: course
+    };
+
+    students.push(student);
+    displayStudents();
+    document.getElementById("name").value="";
+}
+
+// ============================
+// Display Students (Accepts optional filtered array)
+// ============================
+function displayStudents(filteredArray = null) {
+    let listToDisplay = filteredArray ? filteredArray : students;
+    let output = "";
+
+    listToDisplay.forEach(function(student, index){
+        // Find correct master index in case we are looking at a filtered list
+        let masterIndex = students.indexOf(student);
+        
+        output += `
+        <div class="student">
+        <h3>${student.name}</h3>
+        <p><b>Course :</b> ${student.course}</p>
+        <button onclick="deleteStudent(${masterIndex})">Delete</button>
+        </div>
+        `;
+    });
+
+    document.getElementById("studentList").innerHTML = output;
+    document.getElementById("count").innerHTML = students.length;
+    document.querySelector("#title").innerHTML = "Student Dashboard (" + students.length + ")";
+}
+
+// ============================
+// Delete Student
+// ============================
+function deleteStudent(index){
+    students.splice(index, 1);
+    // Reset filter drop-down to "All" on deletion to reflect clean state
+    document.getElementById("filterCourse").value = "All";
+    displayStudents();
+}
+
+// ============================
+// Search Student
+// ============================
+function searchStudent(){
+    let searchName = document.getElementById("search").value.toLowerCase();
+    let result = students.find(function(student){
+        return student.name.toLowerCase() == searchName;
+    });
+
+    if(result){
+        document.getElementById("searchResult").innerHTML = "Student Found : " + result.name + " (" + result.course + ")";
+    } else {
+        document.getElementById("searchResult").innerHTML = "Student Not Found";
+    }
+}
+
+// ============================
+// NEW: Update Student Course
+// ============================
+function updateStudentCourse() {
+    let updateName = document.getElementById("updateName").value.trim().toLowerCase();
+    let newCourse = document.getElementById("updateCourse").value;
+    let resultElement = document.getElementById("updateResult");
+
+    if (updateName === "") {
+        alert("Please enter a student name to update.");
+        return;
+    }
+
+    let student = students.find(function(s) {
+        return s.name.toLowerCase() === updateName;
+    });
+
+    if (student) {
+        student.course = newCourse;
+        resultElement.innerHTML = `Updated ${student.name}'s course to ${newCourse}!`;
+        resultElement.style.color = "green";
+        displayStudents();
+        document.getElementById("updateName").value = "";
+    } else {
+        resultElement.innerHTML = "Student not found. Action aborted.";
+        resultElement.style.color = "red";
+    }
+}
+
+// ============================
+// NEW: Filter Students
+// ============================
+function filterStudents() {
+    let selectedCourse = document.getElementById("filterCourse").value;
+    
+    if (selectedCourse === "All") {
+        displayStudents();
+    } else {
+        let filtered = students.filter(function(student) {
+            return student.course === selectedCourse;
+        });
+        displayStudents(filtered);
+    }
+}
+
+// ============================
+// Dark Mode
+// ============================
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+}
+
+// ============================
+// Highlight Student Cards
+// ============================
+function highlightStudents(){
+    let cards = document.querySelectorAll(".student");
+    cards.forEach(function(card){
+        card.classList.toggle("highlight");
+    });
+}
+
+// ============================
+// Event Bubbling
+// ============================
+document.getElementById("parent").addEventListener("click", function(){
+    alert("Parent Div Clicked");
+});
+
+document.getElementById("child").addEventListener("click", function(event){
+    alert("Child Div Clicked");
+    // event.stopPropagation(); // Uncomment to stop bubbling
+});
+
+</script>
+
+</body>
+</html>
